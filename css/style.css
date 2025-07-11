@@ -1,0 +1,111 @@
+ :root {
+            --primary-color: #112546; 
+            --primary-dark: #112546;  
+            --primary-light: #e0f0ff; 
+            --accent-color: #ffc107; 
+            --text-dark: #212529; 
+            --text-body: #495057;
+            --text-muted: #6c757d; 
+            --bg-light: #f8f9fa; 
+            --bg-white: #ffffff;
+            --bg-dark: #212529;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            --shadow-md: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            --shadow-lg: 0 1rem 2rem rgba(0,0,0,0.15);
+        }
+        body {
+            font-family: roboto !important;
+            line-height: 1.7; 
+            color: var(--text-body);
+            background-color: var(--bg-light);
+            overflow-x: hidden; 
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif; 
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        section {
+            padding: 100px 0; 
+            position: relative;
+        }
+
+        .contact-details-list {
+            margin-bottom: 0; /* Remove default list margin */
+        }
+        .contact-details-list li {
+            margin-bottom: 25px; /* Spacing between list items */
+        }
+        .contact-details-list li:last-child {
+            margin-bottom: 0; /* No margin for the last item */
+        }
+        .contact-details-list .icon-wrapper {
+            width: 55px; /* Smaller icon wrapper for details list */
+            height: 55px;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* box-shadow: var(--shadow-sm); removed for cleaner look here */
+        }
+        .contact-details-list h6 {
+            font-size: 1.1rem;
+        }
+        .contact-details-list p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .contact-details-list a {
+            font-weight: 500;
+        }
+
+        .contact-form .form-control {
+            border-radius: 0.5rem;
+            padding: 14px 18px; /* Slightly larger padding for form inputs */
+            border: 1px solid var(--bg-light); /* Lighter border */
+            background-color: var(--bg-light); /* Light background for inputs */
+        }
+        .contact-form .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.2);
+            background-color: #fff; /* White background on focus */
+        }
+        .contact-form textarea.form-control {
+            resize: vertical; /* Allow vertical resizing */
+        }
+        /* Override social icons for details section if needed */
+        .contact-details-list + .mt-4 .social-icons a {
+            color: var(--primary-color); /* Make them primary color for contrast */
+        }
+        .contact-details-list + .mt-4 .social-icons a:hover {
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Media Queries for Contact Section */
+        @media (max-width: 992px) {
+            .contact-details-list li {
+                margin-bottom: 20px;
+            }
+            .contact-details-list .icon-wrapper {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .contact-details-list li {
+                flex-direction: column; /* Stack icon and text on small screens */
+                align-items: center !important;
+                text-align: center;
+            }
+            .contact-details-list .icon-wrapper {
+                margin-right: 0 !important;
+                margin-bottom: 15px; /* Space between icon and text */
+            }
+            .contact-form {
+                margin-top: 40px; /* Space between details and form on mobile */
+            }
+        }

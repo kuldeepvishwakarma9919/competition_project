@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competition - Your Competition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+       
+
+        /* Utility Classes */
+        .text-primary { color: var(--primary-color) !important; }
+        .text-accent { color: var(--accent-color) !important; }
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-light { background-color: var(--bg-light) !important; }
+        .bg-dark { background-color: var(--bg-dark) !important; }
+        .rounded-lg { border-radius: 1rem !important; }
+
+        /* Buttons (consistent) */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Top Bar (consistent) */
+        .top-bar {
+            background-color: var(--bg-dark);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            padding: 8px 0;
+        }
+        .top-bar a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .top-bar a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Navbar (consistent) */
+        .navbar {
+            box-shadow: var(--shadow-sm);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            transition: all 0.3s ease-in-out;
+            z-index: 1030;
+        }
+        .navbar.scrolled {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow-md);
+        }
+        .navbar-brand .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+        .navbar-brand .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: var(--text-dark);
+            padding: 0.5rem 1.2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 60%;
+        }
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/image_610159.jpg') no-repeat center center/cover;
+            color: #fff;
+            padding: 100px 0;
+            min-height: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Registered Students Section specific styles (UPDATED) */
+        #registered-students-section {
+            background-color: var(--bg-light);
+        }
+        #registered-students-section .card {
+            border-radius: 15px; /* Slightly more rounded */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Softer, deeper shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05); /* Subtle border */
+            overflow: hidden; /* Ensures rounded corners apply to all content */
+        }
+        #registered-students-section .card:hover {
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15); /* Stronger shadow on hover */
+            border-color: var(--primary-color); /* Highlight border on hover */
+        }
+        #registered-students-section .card-body {
+            padding: 1.5rem; /* More internal spacing */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; /* Pushes button to bottom */
+        }
+        #registered-students-section .card img {
+            border: 2px solid var(--primary-color); /* Kept primary color border, can change if desired */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for image */
+        }
+        #registered-students-section .card-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem; /* Slightly larger for prominence */
+            color: var(--text-dark); /* Changed to dark text for contrast */
+            margin-top: 15px; /* Spacing below photo */
+            margin-bottom: 5px;
+        }
+        #registered-students-section .card-text {
+            font-size: 0.95rem; /* Slightly larger */
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        #registered-students-section .card-text i {
+            color: var(--primary-color);
+            margin-right: 8px; /* More space for icon */
+            font-size: 1.1rem; /* Slightly larger icon */
+        }
+        #registered-students-section .student-info {
+            flex-grow: 1; /* Allows info to take up available space */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px; /* Space between info and button */
+        }
+
+        /* Like Button specific styles (UPDATED) */
+        .like-button {
+            display: flex; /* Use flexbox for icon and text alignment */
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Full width within card */
+            border-radius: 50px;
+            padding: 10px 0; /* Adjust padding */
+            font-weight: 600;
+            margin-top: auto; /* Pushes button to the bottom */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow */
+        }
+        /* Default state for not-liked button */
+        .like-button:not(.liked) {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        .like-button:not(.liked):hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .like-button:not(.liked) i {
+            color: var(--primary-color); /* Icon color */
+        }
+        .like-button:not(.liked):hover i {
+            color: #fff;
+        }
+
+        /* Liked state */
+        .like-button.liked {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+            cursor: default; /* No hover effect when liked */
+            box-shadow: none; /* Remove shadow when liked */
+            transform: none; /* No lift when liked */
+        }
+        .like-button.liked i {
+            color: #fff;
+        }
+        .like-button.disabled {
+            opacity: 0.8; /* Slightly less opaque for disabled */
+            cursor: not-allowed;
+        }
+        .like-count {
+            margin-left: 8px; /* Spacing from text/icon */
+            font-weight: 700;
+            color: inherit; /* Inherit color from button text */
+        }
+
+
+        /* Footer (consistent) */
+        footer {
+            background-color: var(--bg-dark);
+            color: #fff;
+            padding: 50px 0;
+        }
+        .footer-heading {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            display: inline-block;
+            color: #fff;
+        }
+        .footer-links li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 5px 0;
+            display: block;
+        }
+        .footer-links li a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+        .footer-contact-info p, .footer-contact-info a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-contact-info a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Back to Top Button (consistent) */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--primary-color);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .navbar-brand .logo-text { font-size: 1.5rem; }
+            .navbar-brand .logo-tagline { font-size: 0.7rem; }
+            .navbar-nav .nav-link { padding: 0.5rem 0.8rem; }
+            .page-hero { padding: 80px 0; min-height: 350px; }
+            .page-hero h1 { font-size: 2.8rem; }
+            .page-hero p { font-size: 1rem; }
+            section { padding: 60px 0; }
+            #registered-students-section .card-title { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .d-md-flex { display: none !important; }
+            .navbar-collapse {
+                background-color: var(--bg-white);
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: var(--shadow-md);
+                margin-top: 10px;
+            }
+            .navbar-nav .nav-link {
+                text-align: center;
+                padding: 10px 0;
+            }
+            .navbar-nav .nav-link::after {
+                display: none;
+            }
+            .page-hero { padding: 60px 0; min-height: 300px; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .page-hero p { font-size: 0.9rem; }
+            .footer-heading { text-align: center; width: 100%; }
+            .footer-links, .footer-contact-info, .social-icons { text-align: center; }
+            .footer-links li a { padding: 3px 0; }
+            .social-icons a { margin: 0 10px; }
+            #registered-students-section .card-title { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 576px) {
+            .page-hero h1 { font-size: 1.8rem; }
+            .page-hero p { font-size: 0.85rem; width: 95% !important; }
+            #registered-students-section .card-title { font-size: 1.4rem; }
+            #registered-students-section .card-body { padding: 1rem; }
+        }
+    </style>
+</head>
+<body data-page="competition">
+
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-none d-md-flex">
+                <span><i class="fas fa-envelope me-2"></i> info@yourcompetition.com</span>
+                <span class="ms-4"><i class="fas fa-phone me-2"></i> +91-12345 67890</span>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div>
+                    <img src="img/logo.jpg" alt="Your Competition Logo" style="width: 60px; height: 60px;">
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-page="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-page="about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="magazine.html" data-page="magazine">Magazine</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="competition.html" data-page="competition">Competition</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="gallery.html" data-page="gallery">Gallery</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-page="contact">Contact Us</a>
+                    </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard.html" data-page="contact">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+
+        <section id="competition-details" class="py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto text-center">
+                        <h2 class="display-5 fw-bold mb-4" data-aos="fade-up">Upcoming Challenges</h2>
+                        <p class="lead text-muted" data-aos="fade-up" data-aos-delay="100">
+                            Get ready for the ultimate test of skill and innovation! We regularly host various competitions across different domains.
+                            Stay tuned for specific rules, prizes, and deadlines.
+                        </p>
+                        <ul class="list-unstyled text-start mt-4">
+                            <li class="mb-3" data-aos="fade-up" data-aos-delay="200">
+                                <i class="fas fa-check-circle text-primary me-2"></i> **Annual Coding Sprint:** Test your programming prowess against the best.
+                            </li>
+                            <li class="mb-3" data-aos="fade-up" data-aos-delay="300">
+                                <i class="fas fa-check-circle text-primary me-2"></i> **Robotics Design Challenge:** Build and innovate the next generation of intelligent machines.
+                            </li>
+                            <li class="mb-3" data-aos="fade-up" data-aos-delay="400">
+                                <i class="fas fa-check-circle text-primary me-2"></i> **Creative Writing Contest:** Unleash your imagination and storytelling abilities.
+                            </li>
+                            <li class="mb-3" data-aos="fade-up" data-aos-delay="500">
+                                <i class="fas fa-check-circle text-primary me-2"></i> **Digital Art Showcase:** Express your creativity through digital mediums.
+                            </li>
+                        </ul>
+                        <a href="register.html" class="btn btn-primary mt-4" data-aos="fade-up" data-aos-delay="600">Register for a Competition</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="registered-students-section" class="bg-white py-5">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Our Talented Participants</h2>
+                <div id="registeredStudentsList" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col-12 text-center" id="noStudentsMessage">
+                        <p class="lead text-muted">No students registered yet. Be the first one to get featured!</p>
+                        <a href="register.html" class="btn btn-outline-primary mt-3">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">About Us</h5>
+                    <p class="text-muted">Your Competition Name is dedicated to empowering individuals through challenging and engaging competitions. We believe in fostering growth, innovation, and community.</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-angle-right me-2"></i> About</a></li>
+                        <li><a href="competition.html"><i class="fas fa-angle-right me-2"></i> Competitions</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-angle-right me-2"></i> Gallery</a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact Us</a></li>
+                        <li><a href="magazine.html"><i class="fas fa-angle-right me-2"></i> Magazine</a></li>
+                        <li><a href="register.html"><i class="fas fa-angle-right me-2"></i> Register</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <h5 class="footer-heading">Connect</h5>
+                    <div class="footer-contact-info">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Competition Lane, Innovation City</p>
+                        <p><i class="fas fa-phone-alt me-2"></i> <a href="tel:+911234567890">+91-12345 67890</a></p>
+                        <p><i class="fas fa-envelope me-2"></i> <a href="mailto:info@yourcompetition.com">info@yourcompetition.com</a></p>
+                    </div>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center text-muted small">
+                <p>&copy; <span id="currentYear"></span> Your Competition Name. All Rights Reserved. | <a href="#" class="text-muted text-decoration-none">Privacy Policy</a> | <a href="#" class="text-muted text-decoration-none">Terms of Use</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Function to generate a simple unique ID for the user's browser
+        function getUniqueBrowserId() {
+            let browserId = localStorage.getItem('browserId');
+            if (!browserId) {
+                browserId = 'user-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('browserId', browserId);
+            }
+            return browserId;
+        }
+
+        // Get the current user's unique ID
+        const currentUserBrowserId = getUniqueBrowserId();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            // Set active class for current page in navbar
+            const currentPage = document.body.dataset.page;
+            if (currentPage) {
+                const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+                navLinks.forEach(link => {
+                    if (link.dataset.page === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // --- Competition Page Specific JavaScript for Registered Students and Like Functionality ---
+
+            const registeredStudentsList = document.getElementById('registeredStudentsList');
+            const noStudentsMessage = document.getElementById('noStudentsMessage');
+
+            function saveStudentsToLocalStorage(students) {
+                try {
+                    localStorage.setItem('registeredStudents', JSON.stringify(students));
+                } catch (e) {
+                    console.error("Error saving to local storage:", e);
+                    // alert("Error saving data. Local storage might be full or unavailable."); // Consider if you want this alert
+                }
+            }
+
+            function loadRegisteredStudents() {
+                let students = JSON.parse(localStorage.getItem('registeredStudents')) || [];
+
+                // Ensure each student has a unique ID and a 'likedBy' property (array of browser IDs)
+                students = students.map(student => {
+                    if (!student.id) {
+                        student.id = 'student-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+                    }
+                    if (!student.likedBy) {
+                        student.likedBy = []; // Initialize as an empty array
+                    }
+                    return student;
+                });
+                saveStudentsToLocalStorage(students); // Save back with ensured IDs and likedBy arrays
+
+                registeredStudentsList.innerHTML = ''; // Clear previous content
+
+                if (students.length === 0) {
+                    noStudentsMessage.classList.remove('d-none');
+                    registeredStudentsList.appendChild(noStudentsMessage);
+                } else {
+                    // If the "no students" message is appended, remove it before adding cards
+                    if (noStudentsMessage.parentNode === registeredStudentsList) {
+                        noStudentsMessage.classList.add('d-none'); // Hide it
+                    }
+                    
+                    students.forEach((student, index) => {
+                        const studentCardCol = document.createElement('div');
+                        studentCardCol.className = 'col';
+                        studentCardCol.setAttribute('data-aos', 'fade-up');
+                        studentCardCol.setAttribute('data-aos-delay', (index % 3) * 100); 
+
+                        // Use a fallback placeholder if no photo or default placeholder
+                        const studentPhotoSrc = student.photo && student.photo !== "https://via.placeholder.com/150/EEEEEE/888888?text=Add+Photo" 
+                                                        ? student.photo 
+                                                        : 'https://via.placeholder.com/100/CCCCCC/FFFFFF?text=No+Photo';
+
+                        // Check if the current browser ID is in the likedBy array for this student
+                        const hasLiked = student.likedBy.includes(currentUserBrowserId);
+                        // Determine initial button classes and text
+                        const buttonClasses = hasLiked ? 'like-button liked' : 'like-button';
+                        const buttonText = hasLiked ? '<i class="fas fa-check-circle"></i> Liked' : '<i class="fas fa-thumbs-up"></i> Like';
+                        const buttonDisabledAttr = hasLiked ? 'disabled' : ''; // Add 'disabled' attribute if already liked
+
+                        studentCardCol.innerHTML = `
+                            <div class="card h-100 shadow-sm border">
+                                <div class="card-body d-flex flex-column align-items-center text-center">
+                                    <img src="${studentPhotoSrc}" 
+                                         class="rounded-circle mb-3 border border-3" 
+                                         alt="${student.name}'s Photo" 
+                                         style="width: 100px; height: 100px; object-fit: cover; border-color: var(--primary-color);">
+                                    
+                                    <div class="student-info">
+                                        <h5 class="card-title">${student.name}</h5>
+                                        <p class="card-text"><i class="fas fa-envelope"></i> ${student.email}</p>
+                                        <p class="card-text"><i class="fas fa-phone"></i> ${student.mobile}</p>
+                                    </div>
+                                    
+                                    <button class="${buttonClasses} btn ${hasLiked ? 'btn-primary' : 'btn-outline-primary'}" data-student-id="${student.id}" ${buttonDisabledAttr}>
+                                        ${buttonText}
+                                        <span class="like-count" id="likeCount_${student.id}">${student.likedBy.length}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        registeredStudentsList.appendChild(studentCardCol);
+                    });
+                    AOS.refresh();
+
+                    // Attach event listeners to all like buttons
+                    document.querySelectorAll('.like-button').forEach(button => {
+                        // Only add listener if the button is not already liked by the current user
+                        if (!button.classList.contains('liked')) {
+                            button.addEventListener('click', handleLikeClick);
+                        } else {
+                             // Ensure button is visually disabled if already liked on load
+                             button.setAttribute('disabled', 'true');
+                        }
+                    });
+                }
+            }
+
+            function handleLikeClick(event) {
+                const button = event.currentTarget;
+                // Prevent multiple clicks or action if already liked/disabled
+                if (button.classList.contains('liked') || button.hasAttribute('disabled')) {
+                    return;
+                }
+
+                const studentId = button.dataset.studentId;
+                // No need to get likeCountSpan here, we'll update the button's innerHTML entirely
+
+                let students = JSON.parse(localStorage.getItem('registeredStudents')) || [];
+                const studentIndex = students.findIndex(s => s.id === studentId);
+
+                if (studentIndex > -1) {
+                    // Check if current user has already liked this student (double-check for robustness)
+                    if (!students[studentIndex].likedBy.includes(currentUserBrowserId)) {
+                        students[studentIndex].likedBy.push(currentUserBrowserId); // Add user's ID to likedBy array
+                        saveStudentsToLocalStorage(students); // Save updated data
+
+                        // Update UI immediately: change button classes, text, and disable it
+                        const newLikeCount = students[studentIndex].likedBy.length;
+                        button.classList.remove('btn-outline-primary'); // Remove outline style
+                        button.classList.add('btn-primary', 'liked', 'disabled'); // Add primary, liked, and disabled styles
+                        button.setAttribute('disabled', 'true'); // Disable the button explicitly
+                        button.innerHTML = '<i class="fas fa-check-circle"></i> Liked <span class="like-count">' + newLikeCount + '</span>';
+                        button.removeEventListener('click', handleLikeClick); // Remove listener after liking to prevent re-trigger
+                    } else {
+                        console.log("Already liked by this user, though button should have been disabled.");
+                    }
+                }
+            }
+
+            // Initial load of students when the page loads
+            loadRegisteredStudents();
+
+            // Listen for changes in local storage from other tabs/windows
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'registeredStudents') {
+                    console.log("Local storage 'registeredStudents' changed, reloading student list.");
+                    loadRegisteredStudents(); // Reload students if local storage changes
+                }
+            });
+        });
+    </script>
+</body>
+</html>

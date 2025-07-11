@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Competition - Magazine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        
+
+        /* Utility Classes */
+        .text-primary { color: var(--primary-color) !important; }
+        .text-accent { color: var(--accent-color) !important; }
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-light { background-color: var(--bg-light) !important; }
+        .bg-dark { background-color: var(--bg-dark) !important; }
+        .rounded-lg { border-radius: 1rem !important; }
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Top Bar (consistent with index.html) */
+        .top-bar {
+            background-color: var(--bg-dark);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            padding: 8px 0;
+        }
+        .top-bar a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .top-bar a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Navbar (consistent with index.html) */
+        .navbar {
+            box-shadow: var(--shadow-sm);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            transition: all 0.3s ease-in-out;
+            z-index: 1030;
+        }
+        .navbar.scrolled {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow-md);
+        }
+        .navbar-brand img {
+            height: 50px;
+        }
+        .navbar-brand .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+        .navbar-brand .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: var(--text-dark);
+            padding: 0.5rem 1.2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 60%;
+        }
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        /* Hero Banner for Internal Pages */
+        .page-hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/magazine-banner.jpg') no-repeat center center/cover;
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Magazine Specific Styles */
+        .magazine-filters .btn {
+            margin: 5px;
+        }
+        .magazine-item {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%; /* Ensure cards are same height in a row */
+            display: flex;
+            flex-direction: column;
+        }
+        .magazine-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+        .magazine-item img {
+            width: 100%;
+            height: 300px; /* Fixed height for consistent cover size */
+            object-fit: cover;
+            border-bottom: 1px solid var(--bg-light);
+        }
+        .magazine-item .card-body {
+            padding: 20px;
+            flex-grow: 1; /* Allow body to take available space */
+            display: flex;
+            flex-direction: column;
+        }
+        .magazine-item .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .magazine-item .card-text {
+            font-size: 0.95rem;
+            color: var(--text-body);
+            flex-grow: 1; /* Allow text to take space */
+        }
+        .magazine-item .magazine-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .magazine-item .magazine-meta .badge {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+        }
+        .magazine-item .magazine-meta .badge-new {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .magazine-item .magazine-meta .badge-old {
+            background-color: var(--text-muted);
+            color: #fff;
+        }
+
+
+        /* Search Bar */
+        .search-container .form-control {
+            border-radius: 50px;
+            padding: 12px 20px;
+            border-color: var(--bg-light);
+            box-shadow: var(--shadow-sm);
+        }
+        .search-container .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+        }
+
+        /* No results message */
+        #magazine-list .no-results {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            padding: 50px;
+            text-align: center;
+        }
+
+
+        /* Footer (consistent with index.html) */
+        footer {
+            background-color: var(--bg-dark);
+            color: #fff;
+            padding: 50px 0;
+        }
+        .footer-heading {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            display: inline-block;
+            color: #fff;
+        }
+        .footer-links li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 5px 0;
+            display: block;
+        }
+        .footer-links li a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+        .footer-contact-info p, .footer-contact-info a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-contact-info a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Back to Top Button (consistent with index.html) */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--primary-color);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .navbar-brand .logo-text { font-size: 1.5rem; }
+            .navbar-brand .logo-tagline { font-size: 0.7rem; }
+            .navbar-nav .nav-link { padding: 0.5rem 0.8rem; }
+            .page-hero { padding: 80px 0; }
+            .page-hero h1 { font-size: 2.8rem; }
+            .page-hero p { font-size: 1rem; }
+            .magazine-item img { height: 250px; }
+            section { padding: 60px 0; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .d-md-flex { display: none !important; }
+            .navbar-collapse {
+                background-color: var(--bg-white);
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: var(--shadow-md);
+                margin-top: 10px;
+            }
+            .navbar-nav .nav-link {
+                text-align: center;
+                padding: 10px 0;
+            }
+            .navbar-nav .nav-link::after {
+                display: none;
+            }
+            .page-hero { padding: 60px 0; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .page-hero p { font-size: 0.9rem; }
+            .magazine-filters .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .magazine-filters .btn:last-child {
+                margin-bottom: 0;
+            }
+            .magazine-item { margin-bottom: 20px; } /* Space between stacked cards */
+            .search-container { margin-bottom: 30px; }
+            .footer-heading { text-align: center; width: 100%; }
+            .footer-links, .footer-contact-info, .social-icons { text-align: center; }
+            .footer-links li a { padding: 3px 0; }
+            .social-icons a { margin: 0 10px; }
+        }
+
+        @media (max-width: 576px) {
+            .page-hero h1 { font-size: 1.8rem; }
+            .page-hero p { font-size: 0.85rem; width: 95% !important; }
+            .magazine-item img { height: 200px; }
+            .magazine-item .card-title { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body data-page="magazine">
+
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-none d-md-flex">
+                <span><i class="fas fa-envelope me-2"></i> info@yourcompetition.com</span>
+                <span class="ms-4"><i class="fas fa-phone me-2"></i> +91-12345 67890</span>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div>
+                    <img src="img/logo.jpg" alt="" style="width: 60px; height: 60px;">
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html" data-page="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-page="about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="magazine.html" data-page="magazine">Magazine</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="competition.html" data-page="competition">Competition</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="gallery.html" data-page="gallery">Gallery</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-page="contact">Contact Us</a>
+                    </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard.html" data-page="contact">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero" data-aos="fade-in" style="background-image: url('img/magazine-banner.jpg');">
+            <div class="container">
+                <h1 data-aos="fade-up text-dark" data-aos-delay="100">Our Magazine Collection</h1>
+                <p data-aos="fade-up text-dark" data-aos-delay="200">Dive into our exclusive magazines featuring competition highlights, interviews, and industry insights.</p>
+            </div>
+        </section>
+
+        <section id="magazine-section" class="bg-white">
+            <div class="container">
+                <div class="row mb-4 justify-content-between align-items-center">
+                    <div class="col-md-6 col-lg-5 text-center text-md-start mb-3 mb-md-0 magazine-filters" data-aos="fade-right">
+                        <button class="btn btn-primary-custom active" data-filter="all">All Magazines</button>
+                        <button class="btn btn-outline-primary" data-filter="new">New Magazines</button>
+                        <button class="btn btn-outline-primary" data-filter="old">Old Magazines</button>
+                    </div>
+                    <div class="col-md-6 col-lg-4 text-center text-md-end search-container" data-aos="fade-left">
+                        <input type="text" id="magazineSearch" class="form-control" placeholder="Search magazines..." aria-label="Search magazines">
+                    </div>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="magazine-list">
+                    <div class="col text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading magazines...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Loading magazines...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">About Us</h5>
+                    <p class="text-muted">Your Competition Name is dedicated to empowering individuals through challenging and engaging competitions. We believe in fostering growth, innovation, and community.</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-angle-right me-2"></i> About</a></li>
+                        <li><a href="competition.html"><i class="fas fa-angle-right me-2"></i> Competitions</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-angle-right me-2"></i> Gallery</a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact Us</a></li>
+                        <li><a href="magazine.html"><i class="fas fa-angle-right me-2"></i> Magazine</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <h5 class="footer-heading">Connect</h5>
+                    <div class="footer-contact-info">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Competition Lane, Innovation City</p>
+                        <p><i class="fas fa-phone-alt me-2"></i> <a href="tel:+911234567890">+91-12345 67890</a></p>
+                        <p><i class="fas fa-envelope me-2"></i> <a href="mailto:info@yourcompetition.com">info@yourcompetition.com</a></p>
+                    </div>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center text-muted small">
+                <p>&copy; <span id="currentYear"></span> Your Competition Name. All Rights Reserved. | <a href="#" class="text-muted text-decoration-none">Privacy Policy</a> | <a href="#" class="text-muted text-decoration-none">Terms of Use</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 1000,
+        once: true,
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Back to Top button functionality
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Navbar shrink on scroll
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // Highlight active navigation link based on current page
+    const currentPage = document.body.dataset.page;
+    if (currentPage) {
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        navLinks.forEach(link => {
+            if (link.dataset.page === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+
+    // --- Magazine Specific JavaScript ---
+
+    // Magazine Data Object - All covers now use hero.jpg
+    const magazines = [
+        // New Magazines (12)
+        { id: 1, title: "Future Tech Innovations", description: "Exploring the latest breakthroughs in AI and robotics.", type: "new", category: "Technology", date: "July 2025", cover: "hero.jpg" },
+        { id: 2, title: "Coding Excellence", description: "Deep dive into competitive programming strategies.", type: "new", category: "Programming", date: "June 2025", cover: "hero.jpg" },
+        { id: 3, title: "Art of Design", description: "Interviews with leading graphic designers and their masterpieces.", type: "new", category: "Design", date: "May 2025", cover: "hero.jpg" },
+        { id: 4, title: "Startup Spotlight", description: "Success stories from emerging Indian startups.", type: "new", category: "Business", date: "April 2025", cover: "hero.jpg" },
+        { id: 5, title: "Youth Leadership", description: "Inspiring journeys of young leaders and their impact.", type: "new", category: "Leadership", date: "March 2025", cover: "hero.jpg" },
+        { id: 6, title: "Environmental Challenges", description: "Innovations for a sustainable future.", type: "new", category: "Environment", date: "Feb 2025", cover: "hero.jpg" },
+        { id: 7, title: "Robotics Revolution", description: "The impact of automation on modern industries.", type: "new", category: "Technology", date: "Jan 2025", cover: "hero.jpg" },
+        { id: 8, title: "Data Science Decoded", description: "Understanding the power of data analytics.", type: "new", category: "Data Science", date: "Dec 2024", cover: "hero.jpg" },
+        { id: 9, title: "Creative Writing Workshop", description: "Tips and tricks from acclaimed authors.", type: "new", category: "Arts", date: "Nov 2024", cover: "hero.jpg" },
+        { id: 10, title: "Digital Marketing Trends", description: "What's new in the world of online advertising.", type: "new", category: "Marketing", date: "Oct 2024", cover: "hero.jpg" },
+        { id: 11, title: "Cybersecurity Essentials", description: "Protecting your digital footprint.", type: "new", category: "Security", date: "Sep 2024", cover: "hero.jpg" },
+        { id: 12, title: "Bio-Engineering Frontiers", description: "Advancements in medical and biological engineering.", type: "new", category: "Science", date: "Aug 2024", cover: "hero.jpg" },
+
+        // Old Magazines (7)
+        { id: 13, title: "Classic Algorithms", description: "Revisiting foundational concepts in computer science.", type: "old", category: "Programming", date: "July 2023", cover: "hero.jpg" },
+        { id: 14, title: "Analog Photography", description: "The timeless charm of film photography.", type: "old", category: "Arts", date: "June 2023", cover: "hero.jpg" },
+        { id: 15, title: "Early Innovations", description: "Pioneering inventions that changed the world.", type: "old", category: "History", date: "May 2023", cover: "hero.jpg" },
+        { id: 16, title: "Basic Economics", description: "Understanding market forces and economic principles.", type: "old", category: "Economics", date: "April 2023", cover: "hero.jpg" },
+        { id: 17, title: "Ancient Civilizations", description: "Mysteries and wonders of the past.", type: "old", category: "History", date: "March 2023", cover: "hero.jpg" },
+        { id: 18, title: "Intro to AI", description: "The early days of Artificial Intelligence.", type: "old", category: "Technology", date: "Feb 2023", cover: "hero.jpg" },
+        { id: 19, title: "Data Structures 101", description: "Foundational concepts for efficient coding.", type: "old", category: "Programming", date: "Jan 2023", cover: "hero.jpg" }
+    ];
+
+    const magazineListContainer = document.getElementById('magazine-list');
+    const filterButtons = document.querySelectorAll('.magazine-filters .btn');
+    const magazineSearchInput = document.getElementById('magazineSearch');
+    let currentFilter = 'all'; // Default filter
+
+    // Function to render magazines
+    function renderMagazines(filteredMagazines) {
+        magazineListContainer.innerHTML = ''; // Clear existing magazines
+
+        if (filteredMagazines.length === 0) {
+            magazineListContainer.innerHTML = `
+                <div class="col-12">
+                    <p class="no-results">No magazines found matching your criteria.</p>
+                </div>
+            `;
+            return;
+        }
+
+        filteredMagazines.forEach(magazine => {
+            const magazineCol = document.createElement('div');
+            magazineCol.className = 'col';
+            magazineCol.setAttribute('data-aos', 'fade-up');
+            // Stagger animation delay slightly so they don't all animate at once
+            magazineCol.setAttribute('data-aos-delay', (magazine.id % 3) * 100);
+
+            magazineCol.innerHTML = `
+                <div class="magazine-item">
+                    <img src="img/${magazine.cover}" class="card-img-top" alt="${magazine.title} Cover">
+                    <div class="card-body">
+                        <h5 class="card-title">${magazine.title}</h5>
+                        <p class="card-text">${magazine.description}</p>
+                        <div class="magazine-meta mt-auto">
+                            <span><i class="fas fa-calendar-alt me-1"></i> ${magazine.date}</span>
+                            <span class="badge ${magazine.type === 'new' ? 'badge-new' : 'badge-old'}">${magazine.type === 'new' ? 'NEW' : 'OLD'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            magazineListContainer.appendChild(magazineCol);
+        });
+
+        AOS.refresh(); // Refresh AOS to detect newly added elements
+    }
+
+    // Function to filter and search magazines
+    function filterAndSearchMagazines() {
+        let filtered = magazines;
+
+        // Apply type filter first
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(mag => mag.type === currentFilter);
+        }
+
+        // Apply search filter
+        const searchTerm = magazineSearchInput.value.toLowerCase();
+        if (searchTerm) {
+            filtered = filtered.filter(mag =>
+                mag.title.toLowerCase().includes(searchTerm) ||
+                mag.description.toLowerCase().includes(searchTerm) ||
+                mag.category.toLowerCase().includes(searchTerm) ||
+                mag.date.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        renderMagazines(filtered);
+    }
+
+    // Event Listeners for Filter Buttons
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            filterAndSearchMagazines();
+        });
+    });
+
+    // Event Listener for Search Input
+    magazineSearchInput.addEventListener('keyup', filterAndSearchMagazines);
+
+    // Initial render of all magazines on page load
+    filterAndSearchMagazines();
+});
+    </script>
+</body>
+</html>

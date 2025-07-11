@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Competition Likes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .text-primary { color: var(--primary-color) !important; }
+        .bg-light { background-color: var(--bg-light) !important; }
+        .bg-dark { background-color: var(--bg-dark) !important; }
+
+        /* Navbar & Footer styles (copied for consistency) */
+        .top-bar {
+            background-color: var(--bg-dark);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            padding: 8px 0;
+        }
+        .top-bar a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .top-bar a:hover {
+            color: var(--primary-color);
+        }
+
+        .navbar {
+            box-shadow: var(--shadow-sm);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            transition: all 0.3s ease-in-out;
+            z-index: 1030;
+        }
+        .navbar.scrolled {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: rgba(255,255,255,0.95);
+            box-shadow: var(--shadow-md);
+        }
+        .navbar-brand .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+        .navbar-brand .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 600;
+            color: var(--text-dark);
+            padding: 0.5rem 1.2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 60%;
+        }
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary { /* Added to dashboard for consistency */
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Page Hero */
+        .page-hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('img/image_610159.jpg') no-repeat center center/cover;
+            color: #fff;
+            padding: 100px 0;
+            min-height: 300px;
+            text-align: center;
+            position: relative;
+        }
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        /* Dashboard specific styles */
+        #dashboard-section .card {
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #dashboard-section .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        #dashboard-section .card-header {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-weight: 600;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        #dashboard-section .likes-list {
+            max-height: 150px; /* Limit height for scroll */
+            overflow-y: auto;
+            border-top: 1px solid var(--bg-light);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .liked-user-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .liked-user-item i {
+            margin-right: 8px;
+            color: var(--primary-dark);
+        }
+        .no-likes-message {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+         .dashboard-photo {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--primary-light);
+            margin-bottom: 15px;
+        }
+        .dashboard-student-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .dashboard-like-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+        .dashboard-like-count i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+
+        /* Footer (consistent) */
+        footer {
+            background-color: var(--bg-dark);
+            color: #fff;
+            padding: 50px 0;
+        }
+        .footer-heading {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            display: inline-block;
+            color: #fff;
+        }
+        .footer-links li a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 5px 0;
+            display: block;
+        }
+        .footer-links li a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+        .footer-contact-info p, .footer-contact-info a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-contact-info a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Back to Top Button (consistent) */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--primary-color);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .navbar-brand .logo-text { font-size: 1.5rem; }
+            .navbar-brand .logo-tagline { font-size: 0.7rem; }
+            .navbar-nav .nav-link { padding: 0.5rem 0.8rem; }
+            .page-hero { padding: 80px 0; min-height: 350px; }
+            .page-hero h1 { font-size: 2.8rem; }
+            section { padding: 60px 0; }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .d-md-flex { display: none !important; }
+            .navbar-collapse {
+                background-color: var(--bg-white);
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: var(--shadow-md);
+                margin-top: 10px;
+            }
+            .navbar-nav .nav-link {
+                text-align: center;
+                padding: 10px 0;
+            }
+            .navbar-nav .nav-link::after {
+                display: none;
+            }
+            .page-hero { padding: 60px 0; min-height: 250px; }
+            .page-hero h1 { font-size: 2.2rem; }
+            .footer-heading { text-align: center; width: 100%; }
+            .footer-links, .footer-contact-info, .social-icons { text-align: center; }
+            .footer-links li a { padding: 3px 0; }
+            .social-icons a { margin: 0 10px; }
+        }
+
+        @media (max-width: 576px) {
+            .page-hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body data-page="dashboard">
+
+    <div class="top-bar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-none d-md-flex">
+                <span><i class="fas fa-envelope me-2"></i> info@yourcompetition.com</span>
+                <span class="ms-4"><i class="fas fa-phone me-2"></i> +91-12345 67890</span>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="ms-3"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div>
+                    <span class="logo-text">Your Competition</span>
+                    <br><small class="logo-tagline">Excellence & Innovation</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html" data-page="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html" data-page="about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="magazine.html" data-page="magazine">Magazine</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="competition.html" data-page="competition">Competition</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="gallery.html" data-page="gallery">Gallery</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html" data-page="contact">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html" data-page="register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary-custom ms-lg-3 active" aria-current="page" href="dashboard.html" data-page="dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero" data-aos="fade-in" style="background-image: url('img/image_610159.jpg');">
+            <div class="container">
+                <h1 data-aos="fade-up" data-aos-delay="100">Admin Dashboard</h1>
+                <p data-aos="fade-up" data-aos-delay="200">View registered students and their total likes.</p>
+            </div>
+        </section>
+
+        <section id="dashboard-section" class="bg-white py-5">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Registered Student Data & Likes</h2>
+                <div id="studentDashboardList" class="row">
+                    <div class="col-12 text-center" id="noDashboardDataMessage">
+                        <p class="lead text-muted">No registered student data found to display on dashboard.</p>
+                        <a href="register.html" class="btn btn-outline-primary mt-3">Register Students Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">About Us</h5>
+                    <p class="text-muted">Your Competition Name is dedicated to empowering individuals through challenging and engaging competitions. We believe in fostering growth, innovation, and community.</p>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a></li>
+                        <li><a href="about.html"><i class="fas fa-angle-right me-2"></i> About</a></li>
+                        <li><a href="competition.html"><i class="fas fa-angle-right me-2"></i> Competitions</a></li>
+                        <li><a href="gallery.html"><i class="fas fa-angle-right me-2"></i> Gallery</a></li>
+                        <li><a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact Us</a></li>
+                        <li><a href="magazine.html"><i class="fas fa-angle-right me-2"></i> Magazine</a></li>
+                        <li><a href="register.html"><i class="fas fa-angle-right me-2"></i> Register</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <h5 class="footer-heading">Connect</h5>
+                    <div class="footer-contact-info">
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Competition Lane, Innovation City</p>
+                        <p><i class="fas fa-phone-alt me-2"></i> <a href="tel:+911234567890">+91-12345 67890</a></p>
+                        <p><i class="fas fa-envelope me-2"></i> <a href="mailto:info@yourcompetition.com">info@yourcompetition.com</a></p>
+                    </div>
+                    <div class="social-icons mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center text-muted small">
+                <p>&copy; <span id="currentYear"></span> Your Competition Name. All Rights Reserved. | <a href="#" class="text-muted text-decoration-none">Privacy Policy</a> | <a href="#" class="text-muted text-decoration-none">Terms of Use</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTopBtn">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
+
+            const currentPage = document.body.dataset.page;
+            if (currentPage) {
+                const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+                navLinks.forEach(link => {
+                    if (link.dataset.page === currentPage) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                 // Special handling for dashboard link as it's a button
+                const dashboardBtn = document.querySelector('a[data-page="dashboard"]');
+                if (dashboardBtn) {
+                    if (currentPage === 'dashboard') {
+                        dashboardBtn.classList.add('active');
+                        dashboardBtn.classList.remove('btn-outline-primary');
+                        dashboardBtn.classList.add('btn-primary');
+                    } else {
+                        dashboardBtn.classList.remove('active');
+                        dashboardBtn.classList.remove('btn-primary');
+                        dashboardBtn.classList.add('btn-outline-primary');
+                    }
+                }
+            }
+
+            // --- Dashboard Specific JavaScript ---
+
+            const studentDashboardList = document.getElementById('studentDashboardList');
+            const noDashboardDataMessage = document.getElementById('noDashboardDataMessage');
+
+            function loadDashboardData() {
+                const students = JSON.parse(localStorage.getItem('registeredStudents')) || [];
+
+                studentDashboardList.innerHTML = ''; // Clear previous content
+
+                if (students.length === 0) {
+                    noDashboardDataMessage.classList.remove('d-none');
+                    studentDashboardList.appendChild(noDashboardDataMessage);
+                } else {
+                    if (noDashboardDataMessage.parentNode === studentDashboardList) {
+                        noDashboardDataMessage.classList.add('d-none');
+                    }
+                    
+                    students.forEach((student, index) => {
+                        const studentPhotoSrc = student.photo && student.photo !== "https://via.placeholder.com/150/EEEEEE/888888?text=Add+Photo" 
+                                              ? student.photo 
+                                              : 'https://via.placeholder.com/100/CCCCCC/FFFFFF?text=No+Photo';
+
+                        const likesCount = student.likedBy ? student.likedBy.length : 0;
+
+                        const likedByListHtml = student.likedBy && student.likedBy.length > 0
+                            ? student.likedBy.map(likerId => `<div class="liked-user-item"><i class="fas fa-user-circle"></i> Liked by: ${likerId}</div>`).join('')
+                            : '<p class="no-likes-message">No likes yet for this student.</p>';
+
+                        const cardHtml = `
+                            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="${(index % 3) * 100}">
+                                <div class="card h-100">
+                                    <div class="card-header">Student: ${student.name}</div>
+                                    <div class="card-body text-center">
+                                        <img src="${studentPhotoSrc}" class="dashboard-photo" alt="${student.name}'s Photo">
+                                        <h5 class="dashboard-student-name">${student.name}</h5>
+                                        <p class="text-muted"><i class="fas fa-envelope me-1"></i> ${student.email}</p>
+                                        <p class="text-muted"><i class="fas fa-phone me-1"></i> ${student.mobile}</p>
+                                        <div class="dashboard-like-count">
+                                            <i class="fas fa-thumbs-up"></i> ${likesCount} Likes
+                                        </div>
+                                        <div class="likes-list text-start">
+                                            <h6>Liked By:</h6>
+                                            ${likedByListHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        studentDashboardList.innerHTML += cardHtml; // Use += to append cards
+                    });
+                    AOS.refresh();
+                }
+            }
+
+            loadDashboardData();
+
+            // Listen for changes in local storage from other tabs/windows
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'registeredStudents') {
+                    loadDashboardData(); // Reload dashboard if student data changes
+                }
+            });
+        });
+    </script>
+</body>
+</html>
